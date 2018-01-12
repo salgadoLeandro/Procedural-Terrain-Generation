@@ -12,10 +12,15 @@ out Data {
 	vec4 cor;
 } DataOut;
 
-//if lower than zero, returns (0.0,1.0,0.0), else (1.0,0.0,val)
-vec3 ltz(float val){
-	float s = sign(val);
-	return vec3(max(0.0,s), max(0.0,-s), val * max(0.0, s));
+vec2 gt(float x, float y){
+	bool s = x > y;
+	return vec2(int(s), int(!s));
+}
+
+vec4 color(float height, float snow_height){
+	bool r = height < 0.0;
+	bool s = height > snow_height;
+	return vec4(int(s), max(int(!r), int(s)), max(int(r), int(s)), height * int(!r));
 }
 
 vec3 permute(vec3 v){
@@ -33,7 +38,7 @@ float sperlin(vec2 pos){
 	vec2 x0 = pos - (i - dot(i, C.xx));
 
 	//other corners
-	vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+	vec2 i1 = gt(x0.x, x0.y);
 	vec4 x12 = x0.xyxy + C.xxzz;
 	x12.xy -= i1;
 	
@@ -56,17 +61,17 @@ float sperlin(vec2 pos){
 	vec3 g;
 	g.x = a0.x * x0.x + h.x * x0.y;
 	g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-	return 130.0 * dot(m, g);
+	return 420 * dot(m, g);
 }
 
-float turbulence(vec2 pos){
+float turbulence(vec2 pos, int octaves){
     float noise = 0.0;
     float maxAmplitude = 0.0;
     float amplitude = 22.0;
     float frequency = 0.003;
-    float persitence = 0.7;
+    float persitence = 0.6;
 
-	for(int i = 0; i < 8; ++i){
+	for(int i = 0; i < octaves; ++i){
 		noise += amplitude * sperlin(pos * frequency);
 		frequency *= 2;
 		maxAmplitude += amplitude;
@@ -79,14 +84,14 @@ float turbulence(vec2 pos){
 void main() {
 	DataOut.normal = normalize(m_normal * normal);
 
-	float cx = camera_pos.x * 0.5;
-	float cz = camera_pos.z * 0.5;
-	vec4 pos = vec4(position.x + 2 * cx, position.y, position.z + 2 * cz, 1.0);
+	vec2 cam = floor(camera_pos.xz);
+
+	vec4 pos = vec4(position.x + cam.x, position.y, position.z + cam.y, 1.0);
 	
-	DataOut.pos = vec4(pos.x, turbulence(pos.xz), pos.z, 1.0);
+	DataOut.pos = vec4(pos.x, turbulence(pos.xz, 8), pos.z, 1.0);
 	
-	vec3 rgb = ltz(DataOut.pos.y);
-	DataOut.cor = vec4(0.0, rgb.rg, 1.0);
-	DataOut.pos.y = rgb.z;
+	vec4 color = color(DataOut.pos.y, 45.0);
+	DataOut.cor = vec4(color.rgb, 1.0);
+	DataOut.pos.y = color.a;
 	gl_Position = DataOut.pos;
 }
