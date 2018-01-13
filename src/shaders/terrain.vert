@@ -4,11 +4,9 @@ uniform mat3 m_normal;
 uniform vec4 camera_pos;
 
 in vec4 position;
-in vec3 normal;
 
 out Data {
 	vec4 pos;
-	vec3 normal;
 	vec4 cor;
 } DataOut;
 
@@ -17,10 +15,11 @@ vec2 gt(float x, float y){
 	return vec2(int(s), int(!s));
 }
 
-vec4 color(float height, float snow_height){
+vec4 color(float height, float snow){
 	bool r = height < 0.0;
-	bool s = height > snow_height;
-	return vec4(int(s), max(int(!r), int(s)), max(int(r), int(s)), height * int(!r));
+	int nr = int(!r);
+	int s = int(height > snow);
+	return vec4(s, max(nr, s), max(int(r), s), height * nr);
 }
 
 vec3 permute(vec3 v){
@@ -82,14 +81,12 @@ float turbulence(vec2 pos, int octaves){
 }
 
 void main() {
-	DataOut.normal = normalize(m_normal * normal);
-
 	vec2 cam = floor(camera_pos.xz);
 
 	vec4 pos = vec4(position.x + cam.x, position.y, position.z + cam.y, 1.0);
 	
 	DataOut.pos = vec4(pos.x, turbulence(pos.xz, 8), pos.z, 1.0);
-	
+
 	vec4 color = color(DataOut.pos.y, 45.0);
 	DataOut.cor = vec4(color.rgb, 1.0);
 	DataOut.pos.y = color.a;

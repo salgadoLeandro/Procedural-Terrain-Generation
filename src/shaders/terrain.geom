@@ -7,7 +7,6 @@ uniform mat4 m_pvm;
 
 in Data {
 	vec4 pos;
-	vec3 normal;
 	vec4 cor;
 } DataIn[3];
 
