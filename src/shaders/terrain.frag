@@ -14,6 +14,7 @@ out vec4 cOut;
 void main() {
 	vec3 n = normalize(m_normal * DataIn.normal);
 	vec3 ld = normalize(vec3(m_view * -l_dir));
-	float intensity = max(dot(n, ld), 0.0);
+	int s = int(DataIn.cor == vec4(1.0));
+	float intensity = max(dot(n, ld), 0.3 + (0.05 * s));
 	cOut = intensity * DataIn.cor;
 }
