@@ -1,0 +1,26 @@
+Name                                      #c  CPU(ms)  GPU(ms)       wt
+----                                ------------------------------------
+ Nau                                       1     9.46              0.00
+  Main cicle                               1     9.45              0.00
+    Pipeline execute                       1     0.29              0.00
+      terrain#pass1                        1     0.26              0.00
+        Pre Process List                   1     0.01     0.00     0.00
+        View Frustum Culling               1     0.00              0.00
+        Queue add                          1     0.01              0.00
+          Get material                     1     0.00              0.00
+        Process queue                      1     0.11              0.00
+          Material prepare                 1     0.05              0.00
+            Buffers                        1     0.00              0.00
+            State                          1     0.00              0.00
+            Color                          1     0.01              0.00
+            Texture                        1     0.00              0.00
+            Image Textures                 1     0.00              0.00
+            Shaders                        1     0.03              0.00
+              Set Uniforms                 1     0.00     0.00     0.01
+              Set Blocks                   1     0.00     0.00     0.00
+          Geometry rendering               1     0.05              0.00
+            Draw                           1     0.05              0.00
+              Bindings                     1     0.00              0.00
+              Draw elements                1     0.00     8.85     0.04
+        Post Process List                  1     0.00     0.00     0.00
+    Zi swap                                1     0.63              0.00
