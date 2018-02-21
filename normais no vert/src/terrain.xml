@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
-<project name="Terrain">
+<project name="Terrain" width=256 height=256>
 	<assets>
 		<scenes>
 			<scene name="Terrain" type="Scene">	
 				<geometry name="Grid" type="GRID" material="terrain" 
-					      DIVISIONS=1024 LENGTH=1024 > 
+					      DIVISIONS=1024 LENGTH=256 >
 				</geometry>								
 			</scene>
 		</scenes>
@@ -22,13 +22,13 @@
 				<FOV value=60/>
 				<NEAR value=1/>
 				<FAR value=1000/>
-				<POSITION x=0 y=100 z=0 />
+				<POSITION x=0 y=10 z=0 />
 			</camera>
 		</cameras>
 		
 		<lights>
 			<light name="Sun" >
-				<POSITION x=20 y=200 z=20 />
+				<POSITION x=20 y=20 z=20 />
 				<DIRECTION x=0 y=1 z=0 />
 			</light>
 		</lights>

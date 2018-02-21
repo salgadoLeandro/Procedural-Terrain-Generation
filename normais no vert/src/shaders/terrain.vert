@@ -61,7 +61,7 @@ float sperlin(vec2 pos){
 	vec3 g;
 	g.x = a0.x * x0.x + h.x * x0.y;
 	g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-	return 420 * dot(m, g);
+	return 230 * dot(m, g);
 }
 
 float turbulence(vec2 pos, int octaves){
